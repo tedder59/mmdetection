@@ -1,5 +1,15 @@
 import mmcv
 
+def had_sign_classes():
+    return ['traffic3', 'traffic4', 'circle']
+
+
+def sign_classes():
+    return [
+        'traffic3', 'traffic4', 'traffic3-back',
+        'traffic4-back', 'circle', 'circle-back'
+    ]
+
 
 def wider_face_classes():
     return ['face']
@@ -95,7 +105,9 @@ dataset_aliases = {
     'imagenet_vid': ['vid', 'imagenet_vid', 'ilsvrc_vid'],
     'coco': ['coco', 'mscoco', 'ms_coco'],
     'wider_face': ['WIDERFaceDataset', 'wider_face', 'WDIERFace'],
-    'cityscapes': ['cityscapes']
+    'sign': ['sign'],
+    'cityscapes': ['cityscapes'],
+    'had_sign': ['had_sign']
 }
 
 

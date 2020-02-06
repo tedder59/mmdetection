@@ -61,18 +61,24 @@ def mask_cross_entropy(pred, target, label, reduction='mean', avg_factor=None):
         pred_slice, target, reduction='mean')[None]
 
 
+def keypoint_cross_entropy(pred, target, label, reduction='sum', avg_factor=None):
+    assert reduction == 'sum' and avg_factor is None
+    return F.cross_entropy(pred, target, reduction=reduction)
+
 @LOSSES.register_module
 class CrossEntropyLoss(nn.Module):
 
     def __init__(self,
                  use_sigmoid=False,
                  use_mask=False,
+                 use_keypoint=False,
                  reduction='mean',
                  loss_weight=1.0):
         super(CrossEntropyLoss, self).__init__()
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
+        self.use_keypoint = use_keypoint
         self.reduction = reduction
         self.loss_weight = loss_weight
 
@@ -80,6 +86,8 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = binary_cross_entropy
         elif self.use_mask:
             self.cls_criterion = mask_cross_entropy
+        elif self.use_keypoint:
+            self.cls_criterion = keypoint_cross_entropy
         else:
             self.cls_criterion = cross_entropy
 
